@@ -1,0 +1,81 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{About this guide}{vii}{chapter*.4}%
+\contentsline {part}{I\hspace {1em}AXI4-Stream Fundamentals}{1}{part.1}%
+\contentsline {chapter}{\numberline {1}Introduction to Streaming Interfaces}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Why a streaming interface?}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Where AXI4-Stream sits in the AMBA family}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Terminology: transfer, packet, frame, stream}{2}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Roadmap of the document}{2}{section.1.4}%
+\contentsline {chapter}{\numberline {2}The AXI4-Stream Protocol}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Signal set}{3}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Required vs.\ optional signals}{3}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Byte qualifiers: data, position and null bytes}{3}{subsection.2.1.2}%
+\contentsline {section}{\numberline {2.2}The VALID/READY handshake}{3}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Case 1: master first}{3}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Case 2: slave first}{4}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Case 3: simultaneous assertion}{4}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Packet boundaries with \texttt {TLAST}}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Routing with \texttt {TID} and \texttt {TDEST}}{4}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Sideband information with \texttt {TUSER}}{4}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Reset behaviour}{4}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Interface compliance checklist}{4}{section.2.7}%
+\contentsline {chapter}{\numberline {3}Timing, Throughput and Backpressure}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Throughput model}{5}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Bubbles and stalls}{5}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Registering the interface}{5}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Naive output register (breaks throughput)}{5}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}The skid buffer / register slice}{5}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}FIFOs and elastic buffering}{6}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Deadlock and starvation}{6}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Writing AXI4-Stream Masters and Slaves}{7}{chapter.4}%
+\contentsline {section}{\numberline {4.1}A minimal master}{7}{section.4.1}%
+\contentsline {section}{\numberline {4.2}A minimal slave}{7}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Pass-through and processing elements}{7}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Zero-latency (combinational) processing}{7}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Pipelined processing with backpressure}{7}{subsection.4.3.2}%
+\contentsline {section}{\numberline {4.4}Rate-changing elements}{7}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Parameterization and reuse conventions}{7}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Stream Infrastructure Blocks}{8}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Register slice}{8}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Data FIFO}{8}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Width converter}{8}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Broadcaster (1-to-N)}{8}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Combiner and switch (N-to-1, N-to-M)}{8}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Subset converter}{8}{section.5.6}%
+\contentsline {part}{II\hspace {1em}AXI4-Stream Video}{9}{part.2}%
+\contentsline {chapter}{\numberline {6}Digital Video Fundamentals}{10}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Raster scan, blanking and active video}{10}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Video timing parameters}{10}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Colour spaces and pixel formats}{10}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Bandwidth budgeting}{10}{section.6.4}%
+\contentsline {chapter}{\numberline {7}The AXI4-Stream Video Protocol}{11}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Mapping video onto AXI4-Stream}{11}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Start of frame and end of line}{11}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Pixel packing in \texttt {TDATA}}{11}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}One pixel per clock}{11}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Multiple pixels per clock}{11}{subsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.3.3}Component ordering and padding}{11}{subsection.7.3.3}%
+\contentsline {section}{\numberline {7.4}Frame synchronisation and error recovery}{12}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Differences from generic AXI4-Stream}{12}{section.7.5}%
+\contentsline {chapter}{\numberline {8}Video Timing and the Boundary Blocks}{13}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Video Timing Controller (VTC)}{13}{section.8.1}%
+\contentsline {section}{\numberline {8.2}From parallel video to AXI4-Stream}{13}{section.8.2}%
+\contentsline {section}{\numberline {8.3}From AXI4-Stream to parallel video}{13}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Clock domains in a video pipeline}{13}{section.8.4}%
+\contentsline {chapter}{\numberline {9}Building a Video Processing Pipeline}{14}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Anatomy of a pipeline}{14}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Point operations}{14}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Line-based operations}{14}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Neighbourhood operations}{14}{section.9.4}%
+\contentsline {section}{\numberline {9.5}Frame buffers and DMA}{14}{section.9.5}%
+\contentsline {section}{\numberline {9.6}Worked example: grayscale converter}{14}{section.9.6}%
+\contentsline {chapter}{\numberline {10}Verification and Debug}{15}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Testbench architecture}{15}{section.10.1}%
+\contentsline {section}{\numberline {10.2}Randomised backpressure and valid throttling}{15}{section.10.2}%
+\contentsline {section}{\numberline {10.3}Protocol checkers and assertions}{15}{section.10.3}%
+\contentsline {section}{\numberline {10.4}Image-level checking}{15}{section.10.4}%
+\contentsline {section}{\numberline {10.5}On-hardware debug}{15}{section.10.5}%
+\contentsline {section}{\numberline {10.6}Symptom-to-cause table}{15}{section.10.6}%
+\contentsline {chapter}{\numberline {A}Signal Quick Reference}{16}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Design Review Checklist}{17}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Glossary}{18}{appendix.C}%

@@ -1,0 +1,19 @@
+The axi4 stream interface (axis) is an stream interface that allows to send or receive an 
+stream of data. It can be used to send or recibe data from an ADC or to a DAC or either 
+to get video data from a camera or write video to a display. The interface is part of the 
+ARM - AMBA specification and there AMBA defines the signals of the interface and its 
+funtions. In the case of the xilinx video streams; xilinx adds a personasization layer givin
+specific meanings and uses for some signals in the interface.
+
+This guide will focus on implementing a small AXIS master video interface acting as video
+source (like a camera). The correct signals timings will be tested and then the video 
+pattern will be tested using verilator + C++/SDL.
+
+AXIS Video interface fundamentals
+The axi video stream protocol has basically this signals for a master interface:
+
+funtion         Width           Direction           Name            Video specific Name
+Video data     any number         out           m_axis_tdata            video data
+            (32 in this case)                          
+
+valid             1               out           m_axis_tvalid               valid

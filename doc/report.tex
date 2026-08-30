@@ -1,0 +1,622 @@
+%==============================================================================
+%  A Practical Guide to AXI4-Stream and AXI4-Stream Video Interfaces
+%
+%  @author : Yosel Balibrea Lastre
+%  @date   : 2026-08-28
+%  @brief  : Skeleton / outline for the AXI4-Stream video tutorial.
+%
+%  Build:  pdflatex report && pdflatex report      (twice for the ToC/refs)
+%==============================================================================
+\documentclass[11pt,a4paper,oneside]{report}
+
+%------------------------------------------------------------------ encoding --
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+%------------------------------------------------------------------- layout ---
+\usepackage[a4paper,margin=2.5cm,headheight=14pt]{geometry}
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{float}
+
+%------------------------------------------------------------------ graphics --
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+%-------------------------------------------------------------------- colours --
+\definecolor{NavyBlue}{HTML}{1F4E79}
+\definecolor{CodeBg}{HTML}{F7F7F7}
+\definecolor{CodeKw}{HTML}{0000B0}
+\definecolor{CodeCm}{HTML}{4E8B4E}
+\definecolor{CodeStr}{HTML}{A31515}
+\definecolor{CodeRule}{HTML}{D0D0D0}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.multipart}
+
+% tikz-timing is ideal for handshake waveforms but is not in every TeX install.
+\newif\ifhastimingpkg
+\IfFileExists{tikz-timing.sty}{\usepackage{tikz-timing}\hastimingpkgtrue}
+                              {\hastimingpkgfalse}
+
+%-------------------------------------------------------------------- tables --
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+%---------------------------------------------------------------- math/units --
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{siunitx}
+\sisetup{per-mode=symbol,detect-weight=true}
+
+%-------------------------------------------------------------------- floats --
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{font=small,labelfont=bf}
+
+%--------------------------------------------------------------------- links --
+\usepackage[colorlinks=true,
+            linkcolor=NavyBlue,
+            citecolor=NavyBlue,
+            urlcolor=NavyBlue,
+            pdfauthor={Yosel Balibrea Lastre},
+            pdftitle={A Practical Guide to AXI4-Stream and AXI4-Stream Video}]{hyperref}
+\usepackage{cleveref}
+
+%----------------------------------------------------------------- listings ---
+\usepackage{listings}
+
+\lstdefinestyle{verilog}{
+  language        = Verilog,
+  basicstyle      = \ttfamily\footnotesize,
+  keywordstyle    = \color{CodeKw}\bfseries,
+  commentstyle    = \color{CodeCm}\itshape,
+  stringstyle     = \color{CodeStr},
+  backgroundcolor = \color{CodeBg},
+  frame           = single,
+  rulecolor       = \color{CodeRule},
+  numbers         = left,
+  numberstyle     = \tiny\color{gray},
+  numbersep       = 8pt,
+  breaklines      = true,
+  showstringspaces= false,
+  tabsize         = 4,
+  captionpos      = b,
+  morekeywords    = {logic,always_ff,always_comb,typedef,interface,modport,
+                     package,import,endpackage,endinterface,bit,byte},
+}
+\lstset{style=verilog}
+
+% Inline signal names:  \sig{TVALID}
+\newcommand{\sig}[1]{\texttt{#1}}
+% Inline module/file names: \file{axis_skid_buffer.v}
+\newcommand{\file}[1]{\texttt{#1}}
+
+%------------------------------------------------------------------- boxes ----
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{rulebox}[1][]{colback=NavyBlue!4,colframe=NavyBlue!60,
+  fonttitle=\bfseries,title=Protocol rule,#1}
+\newtcolorbox{pitfall}[1][]{colback=red!3,colframe=red!50!black,
+  fonttitle=\bfseries,title=Common pitfall,#1}
+\newtcolorbox{notebox}[1][]{colback=black!3,colframe=black!40,
+  fonttitle=\bfseries,title=Note,#1}
+
+%------------------------------------------------------------------ headers ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%---------------------------------------------------------------- TODO macro --
+% Set \showtodofalse before the final build to hide all placeholders.
+\newif\ifshowtodo\showtodotrue
+\newcommand{\TODO}[1]{\ifshowtodo\textcolor{red!70!black}{\small\textbf{[TODO]}~#1}\fi}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+%==============================================================================
+\begin{document}
+%==============================================================================
+
+% Front matter uses roman numerals so PDF page anchors stay unique.
+\pagenumbering{roman}
+
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries A Practical Guide to\\[0.3em] AXI4-Stream and AXI4-Stream Video\par}
+  \vspace{1cm}
+  {\Large Interfaces, protocol rules and RTL design patterns\par}
+  \vspace{2.5cm}
+  {\large Yosel Balibrea Lastre\par}
+  \vspace{0.5cm}
+  {\large \today\par}
+  \vfill
+  {\small Revision 0.1 --- draft\par}
+\end{titlepage}
+\setcounter{page}{2}   % report.cls resets to 1 here; keep anchors unique
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+%==============================================================================
+\chapter*{About this guide}
+\addcontentsline{toc}{chapter}{About this guide}
+\markboth{About this guide}{}
+%==============================================================================
+
+\section*{Scope}
+\TODO{What this document covers: the AXI4-Stream protocol, its video profile,
+and how to write/verify RTL that speaks both.}
+
+\section*{Audience and prerequisites}
+\TODO{Assumed background: synchronous digital design, Verilog/SystemVerilog,
+basic FPGA toolchain use. No prior AXI knowledge assumed.}
+
+\section*{Conventions used}
+\begin{itemize}[nosep]
+  \item Signal names are written as \sig{TVALID}, \sig{TREADY}, \dots
+  \item Master-side ports are prefixed \sig{m\_axis\_}, slave-side \sig{s\_axis\_}.
+  \item All code examples are synthesizable Verilog-2001 unless stated otherwise.
+  \item \TODO{Add: active-low reset convention, clock naming.}
+\end{itemize}
+
+\section*{Accompanying source code}
+\TODO{Point at the repository layout, e.g.\ \file{m\_axis.v}, \file{s\_axis.v},
+testbenches and simulation scripts.}
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+%==============================================================================
+\part{AXI4-Stream Fundamentals}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\chapter{Introduction to Streaming Interfaces}
+%------------------------------------------------------------------------------
+
+\section{Why a streaming interface?}
+\TODO{Memory-mapped vs.\ streaming data movement; when each is appropriate.}
+
+\section{Where AXI4-Stream sits in the AMBA family}
+\TODO{AXI4 / AXI4-Lite / AXI4-Stream comparison table.}
+
+\begin{table}[H]
+  \centering
+  \caption{Comparison of the AMBA AXI interface flavours.}
+  \label{tab:axi-flavours}
+  \begin{tabularx}{\textwidth}{l X X X}
+    \toprule
+    & \textbf{AXI4} & \textbf{AXI4-Lite} & \textbf{AXI4-Stream} \\
+    \midrule
+    Addressing      & \TODO{} & \TODO{} & \TODO{} \\
+    Channels        & \TODO{} & \TODO{} & \TODO{} \\
+    Bursts          & \TODO{} & \TODO{} & \TODO{} \\
+    Typical use     & \TODO{} & \TODO{} & \TODO{} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Terminology: transfer, packet, frame, stream}
+\TODO{Define each level of the hierarchy and how they map to signals.}
+
+\section{Roadmap of the document}
+\TODO{One paragraph per part.}
+
+%------------------------------------------------------------------------------
+\chapter{The AXI4-Stream Protocol}
+\label{ch:axis-protocol}
+%------------------------------------------------------------------------------
+
+\section{Signal set}
+\label{sec:axis-signals}
+
+\begin{table}[H]
+  \centering
+  \caption{AXI4-Stream signal summary.}
+  \label{tab:axis-signals}
+  \begin{tabularx}{\textwidth}{l l l X}
+    \toprule
+    \textbf{Signal} & \textbf{Source} & \textbf{Width} & \textbf{Purpose} \\
+    \midrule
+    \sig{ACLK}      & Clock  & 1              & \TODO{} \\
+    \sig{ARESETn}   & Reset  & 1              & \TODO{} \\
+    \sig{TVALID}    & Master & 1              & \TODO{} \\
+    \sig{TREADY}    & Slave  & 1              & \TODO{} \\
+    \sig{TDATA}     & Master & $8n$           & \TODO{} \\
+    \sig{TSTRB}     & Master & $n$            & \TODO{} \\
+    \sig{TKEEP}     & Master & $n$            & \TODO{} \\
+    \sig{TLAST}     & Master & 1              & \TODO{} \\
+    \sig{TID}       & Master & user           & \TODO{} \\
+    \sig{TDEST}     & Master & user           & \TODO{} \\
+    \sig{TUSER}     & Master & user           & \TODO{} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Required vs.\ optional signals}
+\TODO{Minimal legal interface; default values for omitted signals.}
+
+\subsection{Byte qualifiers: data, position and null bytes}
+\TODO{Table of \sig{TKEEP}/\sig{TSTRB} encodings and their meaning.}
+
+\section{The VALID/READY handshake}
+\label{sec:handshake}
+
+\begin{rulebox}
+  \TODO{State the three canonical handshake rules:
+  (1) a transfer occurs when \sig{TVALID} and \sig{TREADY} are both high on a
+  rising clock edge; (2) once asserted, \sig{TVALID} must remain asserted until
+  the transfer completes; (3) \sig{TREADY} may be asserted or deasserted freely.}
+\end{rulebox}
+
+\subsection{Case 1: master first}
+\TODO{Waveform + description.}
+
+\subsection{Case 2: slave first}
+\TODO{Waveform + description.}
+
+\subsection{Case 3: simultaneous assertion}
+\TODO{Waveform + description.}
+
+\begin{figure}[H]
+  \centering
+  \ifhastimingpkg
+    \begin{tikztimingtable}[timing/slope=0.1]
+      ACLK   & 8{c} \\
+      TVALID & LL 4H LL \\
+      TREADY & LLL 3H LL \\
+      TDATA  & 3U D{D0} D{D1} D{D2} 2U \\
+    \end{tikztimingtable}
+  \else
+    \fbox{\parbox{0.9\textwidth}{\centering\vspace{2em}
+      \TODO{Handshake waveform (install \file{tikz-timing} or drop in a figure).}
+      \vspace{2em}}}
+  \fi
+  \caption{Basic AXI4-Stream handshake with back-to-back transfers.}
+  \label{fig:handshake-basic}
+\end{figure}
+
+\begin{pitfall}
+  \TODO{\sig{TVALID} must not depend combinationally on \sig{TREADY}.
+  Explain why, and show the deadlock it creates.}
+\end{pitfall}
+
+\section{Packet boundaries with \sig{TLAST}}
+\TODO{Packet framing, aligned vs.\ unaligned, zero-length packets.}
+
+\section{Routing with \sig{TID} and \sig{TDEST}}
+\TODO{Stream identification, ordering guarantees, interconnect implications.}
+
+\section{Sideband information with \sig{TUSER}}
+\TODO{Per-transfer vs.\ per-byte \sig{TUSER}; sets up the video profile in
+\cref{ch:video-protocol}.}
+
+\section{Reset behaviour}
+\TODO{\sig{ARESETn} requirements; \sig{TVALID} must be low at reset release.}
+
+\section{Interface compliance checklist}
+\TODO{Bullet list a reviewer can run down.}
+
+%------------------------------------------------------------------------------
+\chapter{Timing, Throughput and Backpressure}
+%------------------------------------------------------------------------------
+
+\section{Throughput model}
+\TODO{Effective bandwidth $= f_{\text{clk}} \times W_{\text{bytes}} \times \eta$;
+define the efficiency term $\eta$.}
+
+\section{Bubbles and stalls}
+\TODO{Sources: source starvation, sink backpressure, pipeline hazards.}
+
+\section{Registering the interface}
+\subsection{Naive output register (breaks throughput)}
+\subsection{The skid buffer / register slice}
+\TODO{Full-throughput, fully-registered pass-through. Include RTL.}
+
+\begin{lstlisting}[caption={Skid buffer skeleton.},label={lst:skid}]
+// TODO: implement
+module axis_skid_buffer #(
+    parameter integer DATA_W = 32
+)(
+    input  wire                 aclk,
+    input  wire                 aresetn,
+    // slave side
+    input  wire [DATA_W-1:0]    s_axis_tdata,
+    input  wire                 s_axis_tvalid,
+    output wire                 s_axis_tready,
+    input  wire                 s_axis_tlast,
+    // master side
+    output wire [DATA_W-1:0]    m_axis_tdata,
+    output wire                 m_axis_tvalid,
+    input  wire                 m_axis_tready,
+    output wire                 m_axis_tlast
+);
+endmodule
+\end{lstlisting}
+
+\section{FIFOs and elastic buffering}
+\TODO{Sizing rules, almost-full thresholds, clock-domain crossing.}
+
+\section{Deadlock and starvation}
+\TODO{Cyclic dependencies in multi-stream designs.}
+
+%------------------------------------------------------------------------------
+\chapter{Writing AXI4-Stream Masters and Slaves}
+%------------------------------------------------------------------------------
+
+\section{A minimal master}
+\TODO{Reference \file{m\_axis.v}.}
+
+\begin{lstlisting}[caption={AXI4-Stream master port declaration.},label={lst:master}]
+// TODO: fill in from m_axis.v
+\end{lstlisting}
+
+\section{A minimal slave}
+\begin{lstlisting}[caption={AXI4-Stream slave port declaration.},label={lst:slave}]
+// TODO: fill in from s_axis.v
+\end{lstlisting}
+
+\section{Pass-through and processing elements}
+\subsection{Zero-latency (combinational) processing}
+\subsection{Pipelined processing with backpressure}
+\TODO{The \texttt{ready = !valid\_reg || downstream\_ready} idiom.}
+
+\section{Rate-changing elements}
+\TODO{Upsizers, downsizers, decimators, and how \sig{TLAST}/\sig{TKEEP} must be
+regenerated.}
+
+\section{Parameterization and reuse conventions}
+\TODO{Coding style used throughout the repository.}
+
+%------------------------------------------------------------------------------
+\chapter{Stream Infrastructure Blocks}
+%------------------------------------------------------------------------------
+
+\section{Register slice}
+\section{Data FIFO}
+\section{Width converter}
+\section{Broadcaster (1-to-N)}
+\section{Combiner and switch (N-to-1, N-to-M)}
+\section{Subset converter}
+\TODO{For each: purpose, parameters, latency, and a small usage example.}
+
+%==============================================================================
+\part{AXI4-Stream Video}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\chapter{Digital Video Fundamentals}
+%------------------------------------------------------------------------------
+
+\section{Raster scan, blanking and active video}
+\TODO{Diagram of a frame with horizontal/vertical blanking regions.}
+
+\section{Video timing parameters}
+\begin{table}[H]
+  \centering
+  \caption{Common video timing modes.}
+  \label{tab:video-modes}
+  \begin{tabular}{l r r r r r}
+    \toprule
+    \textbf{Mode} & \textbf{H active} & \textbf{V active} &
+    \textbf{Pixel clock} & \textbf{Frame rate} & \textbf{Note} \\
+    \midrule
+    640x480p60   & 640  & 480  & \TODO{} & \TODO{} & \TODO{} \\
+    1280x720p60  & 1280 & 720  & \TODO{} & \TODO{} & \TODO{} \\
+    1920x1080p60 & 1920 & 1080 & \TODO{} & \TODO{} & \TODO{} \\
+    3840x2160p60 & 3840 & 2160 & \TODO{} & \TODO{} & \TODO{} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Colour spaces and pixel formats}
+\TODO{RGB, YCbCr 4:4:4 / 4:2:2 / 4:2:0, bit depths.}
+
+\section{Bandwidth budgeting}
+\TODO{Worked example: pixels/clock needed for a given mode at a given
+$f_{\text{clk}}$.}
+
+%------------------------------------------------------------------------------
+\chapter{The AXI4-Stream Video Protocol}
+\label{ch:video-protocol}
+%------------------------------------------------------------------------------
+
+\section{Mapping video onto AXI4-Stream}
+\TODO{Only active video is transported; blanking is not.}
+
+\begin{table}[H]
+  \centering
+  \caption{Video-specific interpretation of the AXI4-Stream signals.}
+  \label{tab:video-signal-map}
+  \begin{tabularx}{\textwidth}{l l X}
+    \toprule
+    \textbf{Signal} & \textbf{Video meaning} & \textbf{Comment} \\
+    \midrule
+    \sig{TDATA}     & Pixel data              & \TODO{} \\
+    \sig{TUSER[0]}  & Start of frame (SOF)    & \TODO{} \\
+    \sig{TLAST}     & End of line (EOL)       & \TODO{} \\
+    \sig{TVALID}    & Pixel valid             & \TODO{} \\
+    \sig{TREADY}    & Downstream ready        & \TODO{} \\
+    \sig{TKEEP}     & Usually tied high       & \TODO{} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Start of frame and end of line}
+\begin{rulebox}
+  \TODO{SOF is asserted on the first pixel of the first line; EOL on the last
+  pixel of every line, including the last line of the frame.}
+\end{rulebox}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.9\textwidth}{\centering\vspace{2em}
+    \TODO{Figure: SOF/EOL over a 4x3 frame.}\vspace{2em}}}
+  \caption{Placement of SOF and EOL over a small frame.}
+  \label{fig:sof-eol}
+\end{figure}
+
+\section{Pixel packing in \sig{TDATA}}
+\subsection{One pixel per clock}
+\subsection{Multiple pixels per clock}
+\subsection{Component ordering and padding}
+\TODO{Bit-level layout tables for RGB888, YUV422, and grey8.}
+
+\section{Frame synchronisation and error recovery}
+\TODO{What a downstream block must do when SOF arrives early/late; line-length
+mismatch handling.}
+
+\section{Differences from generic AXI4-Stream}
+\TODO{Summary table: what the video profile constrains or repurposes.}
+
+\begin{pitfall}
+  \TODO{Forgetting that \sig{TUSER} SOF is only valid on a qualified transfer
+  (\sig{TVALID} \& \sig{TREADY}).}
+\end{pitfall}
+
+%------------------------------------------------------------------------------
+\chapter{Video Timing and the Boundary Blocks}
+%------------------------------------------------------------------------------
+
+\section{Video Timing Controller (VTC)}
+\TODO{Generating and detecting timing.}
+
+\section{From parallel video to AXI4-Stream}
+\TODO{Video-In-to-AXI4-Stream: hsync/vsync/de $\rightarrow$ SOF/EOL.}
+
+\section{From AXI4-Stream to parallel video}
+\TODO{AXI4-Stream-to-Video-Out: locking, the "no backpressure" problem,
+underflow/overflow behaviour.}
+
+\section{Clock domains in a video pipeline}
+\TODO{Pixel clock vs.\ processing clock; where to place the async FIFO.}
+
+%------------------------------------------------------------------------------
+\chapter{Building a Video Processing Pipeline}
+%------------------------------------------------------------------------------
+
+\section{Anatomy of a pipeline}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      node distance=8mm,
+      blk/.style={draw,rounded corners=2pt,minimum height=10mm,
+                  minimum width=22mm,align=center,font=\small},
+      >={Stealth[length=2mm]}]
+    \node[blk] (src) {Source\\\scriptsize sensor / pattern};
+    \node[blk,right=of src] (pre) {Pre-proc};
+    \node[blk,right=of pre] (proc) {Processing};
+    \node[blk,right=of proc] (sink) {Sink\\\scriptsize display / DMA};
+    \draw[->] (src)  -- node[above,font=\tiny]{AXI4S-V} (pre);
+    \draw[->] (pre)  -- node[above,font=\tiny]{AXI4S-V} (proc);
+    \draw[->] (proc) -- node[above,font=\tiny]{AXI4S-V} (sink);
+  \end{tikzpicture}
+  \caption{Skeleton of an AXI4-Stream video pipeline.}
+  \label{fig:pipeline}
+\end{figure}
+
+\section{Point operations}
+\TODO{Colour conversion, gamma, thresholding --- stateless, latency 1.}
+
+\section{Line-based operations}
+\TODO{Line buffers, and how they interact with EOL.}
+
+\section{Neighbourhood operations}
+\TODO{3x3 window generator, border handling.}
+
+\section{Frame buffers and DMA}
+\TODO{VDMA / Frame Buffer Read \& Write, memory bandwidth, tearing.}
+
+\section{Worked example: grayscale converter}
+\TODO{Full RTL walkthrough, from ports to simulation results.}
+
+%------------------------------------------------------------------------------
+\chapter{Verification and Debug}
+%------------------------------------------------------------------------------
+
+\section{Testbench architecture}
+\TODO{Stimulus generator, monitor, scoreboard.}
+
+\section{Randomised backpressure and valid throttling}
+\TODO{Why constant-ready testbenches hide bugs.}
+
+\begin{lstlisting}[caption={Randomised \sig{TREADY} driver.},label={lst:tb-ready}]
+// TODO: implement
+\end{lstlisting}
+
+\section{Protocol checkers and assertions}
+\TODO{SVA properties for the handshake and for SOF/EOL placement.}
+
+\section{Image-level checking}
+\TODO{Dumping frames to PPM/PGM and comparing against a reference model.}
+
+\section{On-hardware debug}
+\TODO{ILA trigger recipes; counting SOF/EOL; detecting stuck \sig{TREADY}.}
+
+\section{Symptom-to-cause table}
+\begin{table}[H]
+  \centering
+  \caption{Debugging AXI4-Stream video pipelines.}
+  \label{tab:debug}
+  \begin{tabularx}{\textwidth}{L{0.32\textwidth} X}
+    \toprule
+    \textbf{Symptom} & \textbf{Likely cause} \\
+    \midrule
+    Image shifted horizontally      & \TODO{} \\
+    Image rolls vertically          & \TODO{} \\
+    Pipeline hangs after one frame  & \TODO{} \\
+    Intermittent tearing            & \TODO{} \\
+    Black output, \sig{TVALID} low  & \TODO{} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+%==============================================================================
+\appendix
+%==============================================================================
+
+\chapter{Signal Quick Reference}
+\TODO{One-page card: all signals, widths, sources, defaults.}
+
+\chapter{Design Review Checklist}
+\TODO{Checklist for an AXI4-Stream video block before integration.}
+
+\chapter{Glossary}
+\begin{description}[style=nextline,font=\normalfont\ttfamily]
+  \item[SOF] Start of frame. \TODO{}
+  \item[EOL] End of line. \TODO{}
+  \item[Beat] \TODO{}
+  \item[Backpressure] \TODO{}
+  \item[Skid buffer] \TODO{}
+\end{description}
+
+%==============================================================================
+\begin{thebibliography}{9}
+\bibitem{amba-axis}
+  ARM, \emph{AMBA 4 AXI4-Stream Protocol Specification}, IHI 0051.
+  \TODO{Confirm the revision used.}
+
+\bibitem{xilinx-ug934}
+  AMD/Xilinx, \emph{AXI4-Stream Video IP and System Design Guide}, UG934.
+
+\bibitem{xilinx-ug1037}
+  AMD/Xilinx, \emph{Vivado AXI Reference Guide}, UG1037.
+
+\TODO{Add further references.}
+\end{thebibliography}
+%==============================================================================
+
+\end{document}
