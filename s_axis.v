@@ -10,10 +10,12 @@ module s_axis #(
 )(
     // VGA signals
     // outputs RGB
-    output reg [VIDEOC_W -1 : 0] red, gree, blue,
+    output wire [VIDEOC_W -1 : 0] red, gree, blue,
+    output reg [9 : 0] sx_o, sy_o,
 
     // sync signals
-    output wire hsync_o, vsync_o, de_o,
+    output wire hsync_o, vsync_o, 
+    output reg de_o,
     
     // AXIS signals
     input wire aclk,
@@ -30,5 +32,50 @@ module s_axis #(
 localparam integer HACTIVE = 640, HFP = 16, HSW = 96, HBP = 48;
 localparam integer VACTIVE = 480, VFP = 10, VSW =  2, VBP = 33;
 
+localparam integer HSYNC_S = HACTIVE + HFP;
+localparam integer HSYNC_E = HSYNC_S + HSW;
+localparam integer VSYNC_S = VACTIVE + VFP;
+localparam integer VSYNC_E = VSYNC_S + VSW;
+localparam integer LINE    = HACTIVE + HFP + HBP + HSW; // line width
+localparam integer FRAME   = VACTIVE + VFP + VBP + VSW; // frame width
+
+localparam integer HCNT_W = $clog2(LINE);
+localparam integer VCNT_W = $clog2(FRAME);
+
+reg [HCNT_W - 1 : 0] sx = {HCNT_W{1'b0}};
+reg [VCNT_W - 1 : 0] sy = {VCNT_W{1'b0}};
+
+wire eol = (sx == LINE) ? 1'b1 : 1'b0;
+wire eof = (sy == FRAME) ? 1'b1 : 1'b0;
+wire de  = ((sx < HACTIVE) && (sy < VACTIVE)) ? 1'b1 : 1'b0;
+
+assign hsync_o = (sx >= HSYNC_S && sx < HSYNC_E) ? 1'b0 : 1'b1;
+assign vsync_o = (sy >= VSYNC_S && sy < VSYNC_E) ? 1'b0 : 1'b1;
+
+wire we = (s_axis_tvalid & s_axis_tlast);
+
+// Test colors
+assign red   = ((sy < 160) || (sy >= 320 && sy < VACTIVE)) ? {VIDEOC_W{1'b0}} : {VIDEOC_W{1'b1}};
+assign green = ((sy < 160) || (sy >= 320 && sy < VACTIVE)) ? {VIDEOC_W{1'b0}} : {VIDEOC_W{1'b1}};
+assign blue  = 8'd235; //((sy < 160) || (sy >= 320 && sy < VACTIVE)) ? {VIDEOC_W{1'b1}} : {VIDEOC_W{1'b1}}
+
+// VGA free running counters
+always @(posedge aclk) begin
+    if(!arst_n) begin
+        sx <= {HCNT_W{1'b0}};
+        sy <= {VCNT_W{1'b0}};
+        sx_o <= {HCNT_W{1'b0}};
+        sy_o <= {VCNT_W{1'b0}};
+        de_o <= 1'b0;
+    end else begin
+        sx_o <= sx;
+        sy_o <= sy;
+        de_o <= de;
+
+        sx <= (eol) ? {HCNT_W{1'b0}} : sx + 1'b1;
+        if (eol)
+            sy <= (eof) ? {VCNT_W{1'b0}} : sy + 1'b1;     
+    end
+end
 
 endmodule

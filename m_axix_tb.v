@@ -73,7 +73,7 @@ module m_axis_tb;
         $dumpfile("wave.fst");
         $dumpvars(0, m_axis_tb);
 
-        #100;
+        #10000000;
         $finish;
     end
 
