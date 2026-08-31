@@ -93,7 +93,7 @@ int main(int argc, char* argv[]){
             Pixel* p = &screenbuffer[top->sy_o*HRES + top->sx_o];
             p->a = 0xFF;  // transparency
             p->b = top->blue;
-            p->g = top->gree;
+            p->g = top->green;
             p->r = top->red;
         }
 
