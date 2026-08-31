@@ -2,19 +2,26 @@
 # Configuration
 # ============================================================
 
-TOP       := s_axis
-RTL       := s_axis.v
+TOP       := top
+RTL       := top.v m_axis.v s_axis.v
 TB        := main.cpp
 
 BUILD_DIR := obj_dir
-#EXEC      := $(BUILD_DIR)/V$(TOP)
-EXEC      := sim
+EXEC      := $(BUILD_DIR)/V$(TOP)
+VCD       := waveform.vcd
+
+# Icarus
+IV_TB     := tb_top.v
+IV_OUT    := tb_top.vvp
 
 # ============================================================
 # Tools
 # ============================================================
 
 VERILATOR := verilator
+IVERILOG  := iverilog
+VVP       := vvp
+GTKWAVE   := gtkwave
 
 # ============================================================
 # Verilator
@@ -25,27 +32,20 @@ VERILATOR_FLAGS := \
 	--exe \
 	--build \
 	--trace \
-	--Wall \
-	-Wno-fatal \
+	-Wall \
 	-Wno-WIDTHEXPAND \
+	-Wno-UNUSEDSIGNAL \
+	--Mdir $(BUILD_DIR) \
 	--top-module $(TOP)
-
-# ============================================================
-# SDL2
-# ============================================================
 
 SDL_CFLAGS := $(shell sdl2-config --cflags)
 SDL_LIBS   := $(shell sdl2-config --libs)
 
 # ============================================================
-# Default target
+# Targets
 # ============================================================
 
 all: $(EXEC)
-
-# ============================================================
-# Build
-# ============================================================
 
 $(EXEC): $(RTL) $(TB)
 	$(VERILATOR) $(VERILATOR_FLAGS) \
@@ -53,26 +53,25 @@ $(EXEC): $(RTL) $(TB)
 		-CFLAGS "$(SDL_CFLAGS)" \
 		-LDFLAGS "$(SDL_LIBS)"
 
-# ============================================================
-# Run simulation
-# ============================================================
-
 run: $(EXEC)
 	./$(EXEC)
 
-# ============================================================
-# Waveform
-# ============================================================
+# ---- Icarus: timing / protocolo ----
 
-wave: run
-	gtkwave waveform.vcd
+$(IV_OUT): $(RTL) $(IV_TB)
+	$(IVERILOG) -g2012 -Wall -o $@ $(IV_TB) $(RTL)
 
-# ============================================================
-# Clean
-# ============================================================
+sim-iv: $(IV_OUT)
+	$(VVP) $(IV_OUT)
+
+wave: sim-iv
+	$(GTKWAVE) $(VCD) &
+
+lint:
+	$(VERILATOR) --lint-only -Wall --top-module $(TOP) $(RTL)
 
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -f waveform.vcd
+	rm -f $(VCD) $(IV_OUT)
 
-.PHONY: all run wave clean
+.PHONY: all run sim-iv wave lint clean

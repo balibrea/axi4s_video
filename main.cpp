@@ -7,7 +7,8 @@
 #include <iostream>
 #include <SDL.h>
 #include <verilated.h>
-#include "Vs_axis.h"      // verilog model
+//#include "Vs_axis.h"      // verilog model
+#include "Vtop.h"
 
 const int HRES = 640;
 const int VRES = 480;
@@ -64,7 +65,7 @@ int main(int argc, char* argv[]){
     cout << "Simulation running press Q to stop" << endl;
 
     // initialized verilog module
-    Vs_axis* top = new Vs_axis;
+    Vtop* top = new Vtop;
 
     // reset
     top->arst_n = 0;  // assert reset

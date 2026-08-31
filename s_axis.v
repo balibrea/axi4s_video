@@ -55,6 +55,10 @@ assign vsync_o = (sy >= VSYNC_S && sy < VSYNC_E) ? 1'b0 : 1'b1;
 
 wire we = (s_axis_tvalid & s_axis_tlast);
 
+
+// AXIS Registers
+assign s_axis_tready = 1'b1;
+
 // ============ Test colors ===============================================================================================
 //assign red   = ((sy < 160) || (sy >= 320 && sy < VACTIVE)) ? 8'd50 : {VIDEOC_W{1'b1}};
 //assign green = ((sy < 160) || (sy >= 320 && sy < VACTIVE)) ? 8'd50 : {VIDEOC_W{1'b1}};
