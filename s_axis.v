@@ -60,6 +60,8 @@ wire we = (s_axis_tvalid & s_axis_tlast);
 assign s_axis_tready = 1'b1;
 
 
+
+
 // VGA free running counters
 always @(posedge aclk) begin
     if(!arst_n) begin
