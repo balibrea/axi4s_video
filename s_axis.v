@@ -53,7 +53,6 @@ wire de  = ((sx < HACTIVE) && (sy < VACTIVE)) ? 1'b1 : 1'b0;
 wire hsync = (sx >= HSYNC_S && sx < HSYNC_E) ? 1'b0 : 1'b1;
 wire vsync = (sy >= VSYNC_S && sy < VSYNC_E) ? 1'b0 : 1'b1;
 
-wire we = (s_axis_tvalid & s_axis_tlast);
 wire valid = (s_axis_tvalid & s_axis_tready);
 
 
@@ -91,10 +90,10 @@ always @(posedge aclk) begin
         de_o <= de;
         hsync_o <= hsync;
         vsync_o <= vsync;
-
+        
         sx <= (eol) ? {HCNT_W{1'b0}} : sx + 1'b1;
         if (eol)
-            sy <= (eof) ? {VCNT_W{1'b0}} : sy + 1'b1;     
+            sy <= (eof) ? {VCNT_W{1'b0}} : sy + 1'b1;   
     end
 end
 
