@@ -1,80 +1,51 @@
-//! @author Yosel Balibrea Lastre
-//! @title: m_axis_tb.v
-//! @date: 2026-08-28
-//! @brief: AXI4-Stream Master Interface Module testbench
 
-`timescale 1ns/1ps
+module top_tb;
 
-module top_tb; 
+  // Parameters
+  localparam  VIDEOC_W = 8;
+  localparam  TDATA_WIDTH = 32;
 
-    localparam FIFO_DEPT = 2;
-    localparam TDATA_WIDTH = 32;
-    localparam V_RES = 640;
-    localparam H_RES = 480;
-    localparam VIDEOC_W = 8;
+  //Ports
+  reg  aclk;
+  reg  arst_n;
+  wire [VIDEOC_W-1 : 0] red;
+  wire [VIDEOC_W-1 : 0] green;
+  wire [VIDEOC_W-1 : 0] blue;
+  wire [9 : 0] sx_o;
+  wire [9 : 0] sy_o;
+  wire de_o;
+  wire hsync_o;
+  wire vsync_o;
 
-    wire [TDATA_WIDTH-1:0] s_axis_tdata;
-    wire s_axis_tvalid;
-    wire s_axis_tlast;
-    wire s_axis_tuser;
-    wire s_axis_tready;
+  top # (
+    .VIDEOC_W(VIDEOC_W),
+    .TDATA_WIDTH(TDATA_WIDTH)
+  )
+  top_inst (
+    .aclk(aclk),
+    .arst_n(arst_n),
+    .red(red),
+    .green(green),
+    .blue(blue),
+    .sx_o(sx_o),
+    .sy_o(sy_o),
+    .de_o(de_o),
+    .hsync_o(hsync_o),
+    .vsync_o(vsync_o)
+  );
 
-    wire [VIDEOC_W - 1 : 0] red, green, blue;
-    wire hsync, vsync, de;
+always #5  aclk = ! aclk ;
 
-    // generate the clock and reset signals
-    reg aclk;
-    reg arst_n;
+initial begin
+    $dumpfile("top_tb.vcd");
+    $dumpvars(0, top_tb);
 
-    // 100MHZ clock and active low reset
-    initial begin
-        aclk = 0;
-        arst_n = 0;
-        #10 arst_n = 1;
-        forever #5 aclk = ~aclk;
-    end
-
-    //m_axis #(
-    //    .TDATA_WIDTH(TDATA_WIDTH)
-    //) dut (
-    //    .aclk(aclk),
-    //    .arst_n(arst_n),
-    //    .m_axis_tdata(m_axis_tdata),
-    //    .m_axis_tvalid(m_axis_tvalid),
-    //    .m_axis_tlast(m_axis_tlast),
-    //    .m_axis_tuser(m_axis_tuser),
-    //    .m_axis_tready(m_axis_tready)
-    //);
-
-
-    s_axis # (
-        .TDATA_WIDTH(TDATA_WIDTH),
-        .VIDEOC_W(VIDEOC_W),
-        .FIFO_DEPT(FIFO_DEPT)
-    )
-    s_axis_inst (
-        .red(red),
-        .gree(gree),
-        .blue(blue),
-        .hsync_o(hsync),
-        .vsync_o(vsync),
-        .de_o(de),
-        .aclk(aclk),
-        .arst_n(arst_n),
-        .s_axis_tdata(s_axis_tdata),
-        .s_axis_tvalid(s_axis_tvalid),
-        .s_axis_tready(s_axis_tready),
-        .s_axis_tlast(s_axis_tlast),
-        .s_axis_tuser(s_axis_tuser)
-    );
-
-    // Main test
-    initial begin
-        $dumpfile("wave.fst");
-        $dumpvars(0, m_axis_tb);
-
-        #10000000;
-        $finish;
-    end
+    aclk = 1'b0;
+    arst_n = 1'b0;
+    #100;
+    arst_n = 1'b1;
+    #1000000;
+    $finish;
+end
 
 endmodule

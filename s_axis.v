@@ -46,20 +46,35 @@ localparam integer VCNT_W = $clog2(FRAME);
 reg [HCNT_W - 1 : 0] sx = {HCNT_W{1'b0}};
 reg [VCNT_W - 1 : 0] sy = {VCNT_W{1'b0}};
 
-wire eol = (sx == LINE) ? 1'b1 : 1'b0;
-wire eof = (sy == FRAME) ? 1'b1 : 1'b0;
+wire eol = (sx == LINE-1) ? 1'b1 : 1'b0;
+wire eof = (sy == FRAME-1) ? 1'b1 : 1'b0;
 wire de  = ((sx < HACTIVE) && (sy < VACTIVE)) ? 1'b1 : 1'b0;
 
 wire hsync = (sx >= HSYNC_S && sx < HSYNC_E) ? 1'b0 : 1'b1;
 wire vsync = (sy >= VSYNC_S && sy < VSYNC_E) ? 1'b0 : 1'b1;
 
 wire we = (s_axis_tvalid & s_axis_tlast);
+wire valid = (s_axis_tvalid & s_axis_tready);
 
 
 // AXIS Registers
-assign s_axis_tready = 1'b1;
+assign s_axis_tready = de;
 
-
+always @(posedge aclk) begin
+    if (!arst_n) begin
+        red <= {VIDEOC_W{1'b0}};
+        green <= {VIDEOC_W{1'b0}};
+        blue <= {VIDEOC_W{1'b0}};
+        
+    end else begin
+        if (valid) begin
+            red <= s_axis_tdata[VIDEOC_W*3-1:VIDEOC_W*2];
+            green <= s_axis_tdata[VIDEOC_W*2-1:VIDEOC_W];
+            blue <= s_axis_tdata[VIDEOC_W-1:0];
+        end
+    end
+    
+end
 
 
 // VGA free running counters
@@ -74,6 +89,8 @@ always @(posedge aclk) begin
         sx_o <= sx;
         sy_o <= sy;
         de_o <= de;
+        hsync_o <= hsync;
+        vsync_o <= vsync;
 
         sx <= (eol) ? {HCNT_W{1'b0}} : sx + 1'b1;
         if (eol)

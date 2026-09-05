@@ -55,9 +55,9 @@ localparam integer SQUARE_SIZE = 50;
 
 wire square = (x_count >= xpos && x_count < xpos + SQUARE_SIZE && y_count >= ypos && y_count < ypos + SQUARE_SIZE) ? 1'b1 : 1'b0;
 
-wire [7:0] red =   square ? (color_cnt == 2'b00) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b01) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b10) ? {VIDEOC_W{1'b0}} : {VIDEOC_W{1'b0}} : 8'd50;
-wire [7:0] green = square ? (color_cnt == 2'b00) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b01) ? {VIDEOC_W{1'b0}} : (color_cnt == 2'b10) ? {VIDEOC_W{1'b1}} : {VIDEOC_W{1'b0}} : 8'd50;
-wire [7:0] blue =  square ? (color_cnt == 2'b00) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b01) ? {VIDEOC_W{1'b0}} : (color_cnt == 2'b10) ? {VIDEOC_W{1'b0}} : {VIDEOC_W{1'b1}} : 8'd230;
+wire [7:0] red =   square ? (color_cnt == 2'b00) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b01) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b10) ? {VIDEOC_W{1'b0}} : 8'd255 : 8'd50;
+wire [7:0] green = square ? (color_cnt == 2'b00) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b01) ? {VIDEOC_W{1'b0}} : (color_cnt == 2'b10) ? {VIDEOC_W{1'b1}} : 8'd182 : 8'd50;
+wire [7:0] blue =  square ? (color_cnt == 2'b00) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b01) ? {VIDEOC_W{1'b0}} : (color_cnt == 2'b10) ? {VIDEOC_W{1'b0}} : 8'd193 : 8'd230;
 
 always @(posedge aclk) begin
     if (!arst_n) begin
@@ -109,11 +109,12 @@ always @(posedge aclk) begin
         x_count <= {HCNT_WIDTH{1'b0}};
         y_count <= {VCNT_WIDTH{1'b0}};
         tvalid <= 1'b0;
-    end else if (valid) begin
-        x_count <= (x_count == H_RES - 1) ? 0 : x_count + 1'b1;
-        //y_count <= (x_count == H_RES - 1) ? ((y_count == V_RES - 1) ? 0 : y_count + 1'b1) : y_count;
-        if (eof) begin
-            y_count <= (eol) ? {HCNT_WIDTH{1'b0}} : y_count + 1'b1;
+    end else begin
+        if (valid) begin
+            x_count <= (x_count == H_RES - 1) ? 0 : x_count + 1'b1;
+            if (eol) begin
+                y_count <= (eof) ? {VCNT_WIDTH{1'b0}} : y_count + 1'b1;
+            end
         end
         
         tvalid <= 1'b1;

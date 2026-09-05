@@ -10,13 +10,13 @@ module top #(
 
     output wire [VIDEOC_W-1 : 0] red, green, blue,
     output wire [9 : 0] sx_o, sy_o,
-    output reg de_o,
+    output wire de_o,
     output wire hsync_o, vsync_o
 
 );
 
-localparam integer V_RES = 640;
-localparam integer H_RES = 480;
+localparam integer V_RES = 480;
+localparam integer H_RES = 640;
 
 wire [TDATA_WIDTH-1 : 0] m_axis_tdata;
 wire m_axis_tvalid, m_axis_tready, m_axis_tlast, m_axis_tuser;
