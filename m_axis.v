@@ -14,12 +14,12 @@ module m_axis #(
     input wire aclk,
     input wire arst_n,
 
-    output wire [TDATA_WIDTH-1:0] m_axis_tdata,
-    output wire m_axis_tvalid,      //! Data valid
+    output reg [TDATA_WIDTH-1:0] m_axis_tdata,
+    output reg m_axis_tvalid,      //! Data valid
     input  wire m_axis_tready,      //! Slave ready
 
-    output wire m_axis_tlast,       //! End of line (only for video stream)
-    output wire m_axis_tuser        //! Start of frame (only for video stream)  
+    output reg m_axis_tlast,       //! End of line (only for video stream)
+    output reg m_axis_tuser        //! Start of frame (only for video stream)  
 );
 
 localparam integer HCNT_WIDTH = $clog2(H_RES);
@@ -32,16 +32,17 @@ reg [VCNT_WIDTH-1:0] y_count;
 wire eol = (x_count == H_RES-1); // End of line
 wire eof = (y_count == V_RES-1); // End of frame
 
-reg tvalid = 1'b0;
-assign m_axis_tvalid = tvalid; // Always valid for this example
+// Skid buffer to register outputs
+// This is to avoid combinational path at the out to the slave
+wire skid_valid = !m_axis_tvalid || m_axis_tready;
 
 // Assert tlast at the end of each line 
-assign m_axis_tlast = eol;
+wire c_tlast = eol;
 
 // Start of frame (SOF)
-assign m_axis_tuser = (x_count == 0 && y_count == 0) ? 1'b1 : 1'b0;
+wire c_tuser = (x_count == 0 && y_count == 0) ? 1'b1 : 1'b0;
 
-wire valid = tvalid && m_axis_tready; // Valid transfer
+wire [TDATA_WIDTH-1:0] c_tdata; // Concatenated RGB data with padding
 
 // ============================= Video Pattern ======================================
 reg xdir, ydir; // Direction of the pixel pattern
@@ -55,6 +56,7 @@ localparam integer SQUARE_SIZE = 50;
 
 wire square = (x_count >= xpos && x_count < xpos + SQUARE_SIZE && y_count >= ypos && y_count < ypos + SQUARE_SIZE) ? 1'b1 : 1'b0;
 
+// switch to case?
 wire [7:0] red =   square ? (color_cnt == 2'b00) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b01) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b10) ? {VIDEOC_W{1'b0}} : 8'd255 : 8'd50;
 wire [7:0] green = square ? (color_cnt == 2'b00) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b01) ? {VIDEOC_W{1'b0}} : (color_cnt == 2'b10) ? {VIDEOC_W{1'b1}} : 8'd182 : 8'd50;
 wire [7:0] blue =  square ? (color_cnt == 2'b00) ? {VIDEOC_W{1'b1}} : (color_cnt == 2'b01) ? {VIDEOC_W{1'b0}} : (color_cnt == 2'b10) ? {VIDEOC_W{1'b0}} : 8'd193 : 8'd230;
@@ -66,7 +68,7 @@ always @(posedge aclk) begin
         xdir <= 1'b0;
         ydir <= 1'b0;
         cnt <= 8'b00000000;
-    end else if (valid && eol && eof) begin
+    end else if (skid_valid && eol && eof) begin
         cnt <= cnt + 1'b1;
         if(!xdir) begin
             xpos <= xpos + 1'b1;
@@ -99,7 +101,7 @@ always @(posedge aclk) begin
     
 end
 
-assign m_axis_tdata = {{PADW{1'b0}}, red, green, blue}; // Concatenate RGB values with padding
+assign c_tdata = {{PADW{1'b0}}, red, green, blue}; // Concatenate RGB values with padding
 
 // ==================================================================================
 
@@ -108,17 +110,22 @@ always @(posedge aclk) begin
     if (!arst_n) begin
         x_count <= {HCNT_WIDTH{1'b0}};
         y_count <= {VCNT_WIDTH{1'b0}};
-        tvalid <= 1'b0;
+        m_axis_tvalid <= 1'b0;
+        m_axis_tlast <= 1'b0;
+        m_axis_tuser <= 1'b0;
+        m_axis_tdata <= {TDATA_WIDTH{1'b0}};
     end else begin
-        if (valid) begin
+        if (skid_valid) begin
             x_count <= (x_count == H_RES - 1) ? 0 : x_count + 1'b1;
             if (eol) begin
                 y_count <= (eof) ? {VCNT_WIDTH{1'b0}} : y_count + 1'b1;
             end
-        end
-        
-        tvalid <= 1'b1;
+            // update outputs
+            m_axis_tlast <= c_tlast;
+            m_axis_tuser <= c_tuser;
+            m_axis_tdata <= c_tdata;
+        end        
+        m_axis_tvalid <= 1'b1;
     end
 end
-
 endmodule
