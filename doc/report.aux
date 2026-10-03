@@ -5,158 +5,17 @@
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \babel@aux{english}{}
-\@writefile{toc}{\contentsline {chapter}{About this guide}{vii}{chapter*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{About this guide}{v}{chapter*.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {part}{I\hspace  {1em}AXI4-Stream Fundamentals}{1}{part.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction to Streaming Interfaces}{2}{chapter.1}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{toc}{\contentsline {section}{\numberline {1.1}Why a streaming interface?}{2}{section.1.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {1.2}Where AXI4-Stream sits in the AMBA family}{2}{section.1.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1.1}{\ignorespaces Comparison of the AMBA AXI interface flavours.}}{2}{table.caption.9}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1.1}{\ignorespaces Comparison of the AMBA AXI interface flavours.}}{2}{table.caption.6}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{tab:axi-flavours}{{1.1}{2}{Comparison of the AMBA AXI interface flavours}{table.caption.9}{}}
+\newlabel{tab:axi-flavours}{{1.1}{2}{Comparison of the AMBA AXI interface flavours}{table.caption.6}{}}
 \newlabel{tab:axi-flavours@cref}{{[table][1][1]1.1}{[1][2][]2}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.3}Terminology: transfer, packet, frame, stream}{2}{section.1.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {1.4}Roadmap of the document}{2}{section.1.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {2}The AXI4-Stream Protocol}{3}{chapter.2}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:axis-protocol}{{2}{3}{The AXI4-Stream Protocol}{chapter.2}{}}
-\newlabel{ch:axis-protocol@cref}{{[chapter][2][]2}{[1][3][]3}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.1}Signal set}{3}{section.2.1}\protected@file@percent }
-\newlabel{sec:axis-signals}{{2.1}{3}{Signal set}{section.2.1}{}}
-\newlabel{sec:axis-signals@cref}{{[section][1][2]2.1}{[1][3][]3}}
-\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces AXI4-Stream signal summary.}}{3}{table.caption.10}\protected@file@percent }
-\newlabel{tab:axis-signals}{{2.1}{3}{AXI4-Stream signal summary}{table.caption.10}{}}
-\newlabel{tab:axis-signals@cref}{{[table][1][2]2.1}{[1][3][]3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Required vs.\ optional signals}{3}{subsection.2.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}Byte qualifiers: data, position and null bytes}{3}{subsection.2.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.2}The VALID/READY handshake}{3}{section.2.2}\protected@file@percent }
-\newlabel{sec:handshake}{{2.2}{3}{The VALID/READY handshake}{section.2.2}{}}
-\newlabel{sec:handshake@cref}{{[section][2][2]2.2}{[1][3][]3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Case 1: master first}{3}{subsection.2.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Case 2: slave first}{4}{subsection.2.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}Case 3: simultaneous assertion}{4}{subsection.2.2.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Basic AXI4-Stream handshake with back-to-back transfers.}}{4}{figure.caption.11}\protected@file@percent }
-\newlabel{fig:handshake-basic}{{2.1}{4}{Basic AXI4-Stream handshake with back-to-back transfers}{figure.caption.11}{}}
-\newlabel{fig:handshake-basic@cref}{{[figure][1][2]2.1}{[1][4][]4}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Packet boundaries with \texttt  {TLAST}}{4}{section.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Routing with \texttt  {TID} and \texttt  {TDEST}}{4}{section.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}Sideband information with \texttt  {TUSER}}{4}{section.2.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.6}Reset behaviour}{4}{section.2.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.7}Interface compliance checklist}{4}{section.2.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Timing, Throughput and Backpressure}{5}{chapter.3}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Throughput model}{5}{section.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Bubbles and stalls}{5}{section.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Registering the interface}{5}{section.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Naive output register (breaks throughput)}{5}{subsection.3.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}The skid buffer / register slice}{5}{subsection.3.3.2}\protected@file@percent }
-\newlabel{lst:skid}{{3.1}{5}{Skid buffer skeleton}{lstlisting.3.1}{}}
-\newlabel{lst:skid@cref}{{[lstlisting][1][3]3.1}{[1][5][]5}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.1}{\ignorespaces Skid buffer skeleton.}}{5}{lstlisting.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}FIFOs and elastic buffering}{6}{section.3.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.5}Deadlock and starvation}{6}{section.3.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Writing AXI4-Stream Masters and Slaves}{7}{chapter.4}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}A minimal master}{7}{section.4.1}\protected@file@percent }
-\newlabel{lst:master}{{4.1}{7}{AXI4-Stream master port declaration}{lstlisting.4.1}{}}
-\newlabel{lst:master@cref}{{[lstlisting][1][4]4.1}{[1][7][]7}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.1}{\ignorespaces AXI4-Stream master port declaration.}}{7}{lstlisting.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}A minimal slave}{7}{section.4.2}\protected@file@percent }
-\newlabel{lst:slave}{{4.2}{7}{AXI4-Stream slave port declaration}{lstlisting.4.2}{}}
-\newlabel{lst:slave@cref}{{[lstlisting][2][4]4.2}{[1][7][]7}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.2}{\ignorespaces AXI4-Stream slave port declaration.}}{7}{lstlisting.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Pass-through and processing elements}{7}{section.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Zero-latency (combinational) processing}{7}{subsection.4.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Pipelined processing with backpressure}{7}{subsection.4.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Rate-changing elements}{7}{section.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Parameterization and reuse conventions}{7}{section.4.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Stream Infrastructure Blocks}{8}{chapter.5}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Register slice}{8}{section.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Data FIFO}{8}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Width converter}{8}{section.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}Broadcaster (1-to-N)}{8}{section.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.5}Combiner and switch (N-to-1, N-to-M)}{8}{section.5.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.6}Subset converter}{8}{section.5.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {part}{II\hspace  {1em}AXI4-Stream Video}{9}{part.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Digital Video Fundamentals}{10}{chapter.6}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Raster scan, blanking and active video}{10}{section.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}Video timing parameters}{10}{section.6.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces Common video timing modes.}}{10}{table.caption.12}\protected@file@percent }
-\newlabel{tab:video-modes}{{6.1}{10}{Common video timing modes}{table.caption.12}{}}
-\newlabel{tab:video-modes@cref}{{[table][1][6]6.1}{[1][10][]10}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}Colour spaces and pixel formats}{10}{section.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.4}Bandwidth budgeting}{10}{section.6.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}The AXI4-Stream Video Protocol}{11}{chapter.7}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:video-protocol}{{7}{11}{The AXI4-Stream Video Protocol}{chapter.7}{}}
-\newlabel{ch:video-protocol@cref}{{[chapter][7][]7}{[1][11][]11}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.1}Mapping video onto AXI4-Stream}{11}{section.7.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {7.1}{\ignorespaces Video-specific interpretation of the AXI4-Stream signals.}}{11}{table.caption.13}\protected@file@percent }
-\newlabel{tab:video-signal-map}{{7.1}{11}{Video-specific interpretation of the AXI4-Stream signals}{table.caption.13}{}}
-\newlabel{tab:video-signal-map@cref}{{[table][1][7]7.1}{[1][11][]11}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.2}Start of frame and end of line}{11}{section.7.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7.1}{\ignorespaces Placement of SOF and EOL over a small frame.}}{11}{figure.caption.14}\protected@file@percent }
-\newlabel{fig:sof-eol}{{7.1}{11}{Placement of SOF and EOL over a small frame}{figure.caption.14}{}}
-\newlabel{fig:sof-eol@cref}{{[figure][1][7]7.1}{[1][11][]11}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.3}Pixel packing in \texttt  {TDATA}}{11}{section.7.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.1}One pixel per clock}{11}{subsection.7.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.2}Multiple pixels per clock}{11}{subsection.7.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.3}Component ordering and padding}{11}{subsection.7.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7.4}Frame synchronisation and error recovery}{12}{section.7.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7.5}Differences from generic AXI4-Stream}{12}{section.7.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {8}Video Timing and the Boundary Blocks}{13}{chapter.8}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {8.1}Video Timing Controller (VTC)}{13}{section.8.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8.2}From parallel video to AXI4-Stream}{13}{section.8.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8.3}From AXI4-Stream to parallel video}{13}{section.8.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8.4}Clock domains in a video pipeline}{13}{section.8.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {9}Building a Video Processing Pipeline}{14}{chapter.9}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {9.1}Anatomy of a pipeline}{14}{section.9.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {9.1}{\ignorespaces Skeleton of an AXI4-Stream video pipeline.}}{14}{figure.caption.15}\protected@file@percent }
-\newlabel{fig:pipeline}{{9.1}{14}{Skeleton of an AXI4-Stream video pipeline}{figure.caption.15}{}}
-\newlabel{fig:pipeline@cref}{{[figure][1][9]9.1}{[1][14][]14}}
-\@writefile{toc}{\contentsline {section}{\numberline {9.2}Point operations}{14}{section.9.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9.3}Line-based operations}{14}{section.9.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9.4}Neighbourhood operations}{14}{section.9.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9.5}Frame buffers and DMA}{14}{section.9.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9.6}Worked example: grayscale converter}{14}{section.9.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {10}Verification and Debug}{15}{chapter.10}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {10.1}Testbench architecture}{15}{section.10.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10.2}Randomised backpressure and valid throttling}{15}{section.10.2}\protected@file@percent }
-\newlabel{lst:tb-ready}{{10.1}{15}{Randomised \sig {TREADY} driver}{lstlisting.10.1}{}}
-\newlabel{lst:tb-ready@cref}{{[lstlisting][1][10]10.1}{[1][15][]15}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {10.1}{\ignorespaces Randomised \texttt  {TREADY} driver.}}{15}{lstlisting.10.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10.3}Protocol checkers and assertions}{15}{section.10.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10.4}Image-level checking}{15}{section.10.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10.5}On-hardware debug}{15}{section.10.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10.6}Symptom-to-cause table}{15}{section.10.6}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {10.1}{\ignorespaces Debugging AXI4-Stream video pipelines.}}{15}{table.caption.16}\protected@file@percent }
-\newlabel{tab:debug}{{10.1}{15}{Debugging AXI4-Stream video pipelines}{table.caption.16}{}}
-\newlabel{tab:debug@cref}{{[table][1][10]10.1}{[1][15][]15}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Signal Quick Reference}{16}{appendix.A}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {B}Design Review Checklist}{17}{appendix.B}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {C}Glossary}{18}{appendix.C}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\bibcite{amba-axis}{1}
-\bibcite{xilinx-ug934}{2}
-\bibcite{xilinx-ug1037}{3}
-\gdef \@abspage@last{26}
+\gdef \@abspage@last{7}
