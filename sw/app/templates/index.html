@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MiniZed pattern generator</title>
+<style>
+  :root { color-scheme: dark; }
+  body {
+    margin: 0; min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 1rem;
+    background: #14161a; color: #d6dae0;
+    font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  h1 { margin: 0; font-size: 1rem; font-weight: 600; letter-spacing: .02em; }
+
+  /* Native size, never distorted.  width/height on the <img> give the
+     browser the true 4:3 box up front so there is no reflow, and the
+     max-width rule only ever scales it DOWN on a narrow screen, with
+     aspect-ratio keeping 4:3. */
+  img#view {
+    width: {{ width }}px;
+    max-width: 100vw;
+    height: auto;
+    aspect-ratio: {{ width }} / {{ height }};
+    display: block;
+    background: #000;
+    border: 1px solid #2a2f37;
+    image-rendering: pixelated;   /* show real pixels, no smoothing */
+  }
+  .bar { display: flex; gap: 1.25rem; font-size: 12px; color: #8b93a0; }
+  .bar b { color: #d6dae0; font-weight: 600; }
+</style>
+</head>
+<body>
+  <h1>MiniZed AXI-Stream pattern generator</h1>
+
+  <img id="view" src="/stream" width="{{ width }}" height="{{ height }}"
+       alt="live stream from /dev/video0">
+
+  <div class="bar">
+    <span>native <b>{{ width }}&times;{{ height }}</b></span>
+    <span>displayed <b id="disp">-</b></span>
+    <span><b id="fps">-</b> fps</span>
+    <span><b id="frames">0</b> frames</span>
+  </div>
+
+<script>
+const view = document.getElementById('view');
+
+function showSize() {
+  const r = view.getBoundingClientRect();
+  document.getElementById('disp').textContent =
+    Math.round(r.width) + '×' + Math.round(r.height);
+}
+addEventListener('resize', showSize);
+view.addEventListener('load', showSize);
+showSize();
+
+setInterval(async () => {
+  try {
+    const s = await (await fetch('/stats')).json();
+    document.getElementById('fps').textContent = s.fps;
+    document.getElementById('frames').textContent = s.frames;
+  } catch (e) { /* server went away; keep the last numbers */ }
+}, 1000);
+</script>
+</body>
+</html>
