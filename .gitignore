@@ -1,0 +1,31 @@
+# Verilator / simulation output
+obj_dir/
+test/
+a.out
+
+*.vcd
+*.vvp
+
+# LaTeX build artifacts
+doc/build/
+*.aux
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.synctex.gz
+
+# Kernel module build output
+*.ko
+*.o
+*.mod
+*.mod.c
+*.cmd
+Module.symvers
+modules.order
+
+# Editor
+.vscode/
